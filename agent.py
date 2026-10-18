@@ -956,12 +956,16 @@ def chat(messages: list[dict]) -> dict:
     """One round trip to the local model. Returns the assistant message."""
     body = json.dumps({
         "model": MODEL, "messages": messages, "tools": OLLAMA_TOOLS,
-        "stream": False, "options": {"temperature": 0},
+        "stream": False, "options": {"temperature": 0, "num_ctx": 16384},
     }).encode()
     req = urllib.request.Request(f"{OLLAMA_URL}/api/chat", data=body,
                                  headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=300) as resp:
-        return json.load(resp)["message"]
+    try:
+        with urllib.request.urlopen(req, timeout=300) as resp:
+            return json.load(resp)["message"]
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode()
+        raise RuntimeError(f"Ollama {e.code}: {err_body}") from e
 
 
 def _message_content(message: dict) -> str:
