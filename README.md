@@ -34,23 +34,21 @@ How the nodes connect (the planted ring and mule are shown in red):
 
 ```mermaid
 graph LR
-  R1((RING-01)) -- TRANSFERRED 9400 --> R2((RING-02))
-  R2 -- TRANSFERRED 9420 --> R3((RING-03))
-  R3 -- TRANSFERRED 9440 --> R4((RING-04))
-  R4 -- TRANSFERRED 9460 --> R5((RING-05))
-  R5 -- TRANSFERRED 9480 --> R1
-  R3 -- TRANSFERRED 9500 --> M((MULE-01))
-  M -- TRANSFERRED 9200 --> A7((ACC-007))
-  M -- TRANSFERRED 250 --> A8((ACC-008))
-  R1 -- USED_DEVICE --> DA[[DEV-RING-A]]
-  R1 -- USED_DEVICE --> DB[[DEV-RING-B]]
-  R2 -- USED_DEVICE --> DA
-  R2 -- USED_DEVICE --> DB
-  M -- USED_DEVICE --> DB
-  R1 -- LOGGED_FROM --> IP[[203.0.113.50]]
-  R2 -- LOGGED_FROM --> IP
-  classDef ring fill:#fdd,stroke:#c00;
-  class R1,R2,R3,R4,R5,M ring;
+  R1((RING-01)) -->|TRANSFERRED 9400| R2((RING-02))
+  R2 -->|TRANSFERRED 9420| R3((RING-03))
+  R3 -->|TRANSFERRED 9440| R4((RING-04))
+  R4 -->|TRANSFERRED 9460| R5((RING-05))
+  R5 -->|TRANSFERRED 9480| R1
+  R3 -->|TRANSFERRED 9500| M((MULE-01))
+  M -->|TRANSFERRED 9200| A7((ACC-007))
+  M -->|TRANSFERRED 250| A8((ACC-008))
+  R1 -->|USED_DEVICE| DA[DEV-RING-A]
+  R1 -->|USED_DEVICE| DB[DEV-RING-B]
+  R2 -->|USED_DEVICE| DA
+  R2 -->|USED_DEVICE| DB
+  M -->|USED_DEVICE| DB
+  R1 -->|LOGGED_FROM| IP[203.0.113.50]
+  R2 -->|LOGGED_FROM| IP
 ```
 
 The agent's tools traverse these edges. `shared_device_accounts` walks `USED_DEVICE` to find
